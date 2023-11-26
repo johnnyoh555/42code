@@ -1,9 +1,9 @@
-SRCS = *.c
+SRCS = main.c parsing.c drawline.c convert.c isometric.c colors.c hooks.c
 OBJS = $(SRCS:.c=.o)
 NAME = FdF
 CFLAGS = -Wextra -Werror -Wall
 CC = gcc
-CLIB = -Lmlx -lmlx -framework OpenGl -framework Appkit -Imlx
+CLIB = -lmlx -framework OpenGl -framework Appkit -Imlx
 LIBFT=	make -C ./libft
 
 all : $(NAME)
