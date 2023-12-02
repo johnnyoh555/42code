@@ -1,25 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   hooks.c                                            :+:      :+:    :+:   */
+/*   spinhooks.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jooh <jooh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/26 20:40:51 by jooh              #+#    #+#             */
-/*   Updated: 2023/11/28 15:27:12 by jooh             ###   ########.fr       */
+/*   Created: 2023/11/27 20:17:38 by jooh              #+#    #+#             */
+/*   Updated: 2023/11/28 14:59:22 by jooh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	change_dis(t_info *info, int i)
+void	spin_byx(t_info *info)
 {
-	if (i == 27 && info->dis != 1)
-		info->dis -= 1;
-	else if (i == 24 && info->dis < 12)
-		info->dis += 1;
-	else
-		return ;
+	info->xspin++;
+	if (info->xspin == 36)
+		info->xspin = 0;
 	if (info->aftimg == 0)
 	{
 		mlx_destroy_image(info->mlx, info->img);
@@ -27,26 +24,18 @@ void	change_dis(t_info *info, int i)
 		info->ptr = mlx_get_data_addr(info->img, &(info->pixel),
 				&(info->size), &(info->endian));
 	}
+	spinning_byx(info);
+	isometric(info);
 	to_cen(info, (info->pi)[(info->max_y - 1) / 2][(info->max_x - 1) / 2]);
 	drawline(info);
 	mlx_put_image_to_window(info->mlx, info->win, info->img, 0, 0);
 }
 
-void	move_point(t_info *info, int i)
+void	spin_byy(t_info *info)
 {
-	if (i == 13)
-		info->move_y -= 10;
-	if (i == 1)
-		info->move_y += 10;
-	if (i == 0)
-		info->move_x -= 10;
-	if (i == 2)
-		info->move_x += 10;
-	if (i == 8)
-	{
-		info->move_x = 0;
-		info->move_y = 0;
-	}
+	info->yspin++;
+	if (info->yspin == 36)
+		info->yspin = 0;
 	if (info->aftimg == 0)
 	{
 		mlx_destroy_image(info->mlx, info->img);
@@ -54,48 +43,51 @@ void	move_point(t_info *info, int i)
 		info->ptr = mlx_get_data_addr(info->img, &(info->pixel),
 				&(info->size), &(info->endian));
 	}
+	spinning_byy(info);
+	isometric(info);
 	to_cen(info, (info->pi)[(info->max_y - 1) / 2][(info->max_x - 1) / 2]);
 	drawline(info);
 	mlx_put_image_to_window(info->mlx, info->win, info->img, 0, 0);
 }
 
-void	del_screen(t_info *info)
+void	from_front(t_info *info)
 {
-	free_vector(info);
-	mlx_destroy_image(info->mlx, info->img);
-	mlx_destroy_window(info->mlx, info->win);
-	write(1, "\e[32mGood by FdF\n\e[0m", 21);
-	exit(0);
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < info->max_y)
+	{
+		j = 0;
+		while (j < info->max_x)
+		{
+			if (i != info->max_y - 1)
+				bresenham(info, *((info->pi)[i][j]), *(info->pi[i + 1][j]));
+			if (j != info->max_x - 1)
+				bresenham(info, *((info->pi)[i][j]), *(info->pi[i][j + 1]));
+			j++;
+		}
+		i++;
+	}
 }
 
-void	afterimage(t_info *info)
+void	from_back(t_info *info)
 {
-	if (info->aftimg == 0)
-		info->aftimg = 1;
-	else
-		info->aftimg = 0;
-}
+	int	i;
+	int	j;
 
-int	key_press(int keycode, t_info *info)
-{
-	if (keycode == 53)
-		del_screen(info);
-	if (keycode == 13 || keycode == 1 || keycode == 0 || keycode == 2
-		|| keycode == 8)
-		move_point(info, keycode);
-	if (keycode == 27 || keycode == 24)
-		change_dis(info, keycode);
-	if (keycode == 18)
-		spin_byx(info);
-	if (keycode == 19)
-		spin_byy(info);
-	if (keycode == 4)
-		init_spin(info);
-	if (keycode == 46)
-		ppt(info);
-	if (keycode == 3)
-		front(info);
-	if (keycode == 12)
-		afterimage(info);
-	return (0);
+	i = info->max_y - 1;
+	while (i >= 0)
+	{
+		j = info->max_x - 1;
+		while (j >= 0)
+		{
+			if (i != 0)
+				bresenham(info, *((info->pi)[i][j]), *(info->pi[i - 1][j]));
+			if (j != 0)
+				bresenham(info, *((info->pi)[i][j]), *(info->pi[i][j - 1]));
+			j--;
+		}
+		i--;
+	}
 }
