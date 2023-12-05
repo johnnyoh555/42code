@@ -1,89 +1,69 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   parsing_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jooh <jooh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 15:57:55 by jooh              #+#    #+#             */
-/*   Updated: 2023/12/05 19:53:54 by jooh             ###   ########.fr       */
+/*   Updated: 2023/12/04 21:23:46 by jooh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
-void	end_seq(t_info *info, t_philo *philo)
+int	make_checker_sema(t_info *info)
 {
-	int	i;
+	char	*nbr;
+	char	*str;
+	int		i;
 
+	sem_unlink("s_sema");
+	info->s = sem_open("s_sema", O_CREAT, 0644, 1);
+	info->checker = malloc(sizeof(sem_t *) * info->humans);
+	if (info->checker == 0)
+		return (0);
 	i = 0;
-	if (info->real_fork)
-		free(info->real_fork);
 	while (i < info->humans)
 	{
-		if (info->fork)
-			pthread_mutex_destroy(&(info->fork[i]));
-		if (philo && philo[i].thread)
-			free(philo[i].thread);
+		nbr = ft_itoa(i);
+		str = ft_strjoin("checker_sema", nbr);
+		sem_unlink(str);
+		info->checker[i] = sem_open(str, O_CREAT, 0644, 1);
+		if (info->checker[i] == SEM_FAILED)
+			return (1);
+		free(nbr);
+		free(str);
 		i++;
 	}
-	if (info->fork)
-		free(info->fork);
-	pthread_mutex_destroy(&(info->printer));
-	if (philo)
-		free(philo);
-}
-
-long	get_time(void)
-{
-	struct timeval	tv;
-
-	if (gettimeofday(&tv, 0) == -1)
-		return (-1);
-	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+	return (0);
 }
 
 int	make_philos(t_info *info, t_philo *philo)
 {
 	int		i;
 
-	i = 0;
-	while (i < info->humans)
+	sem_unlink("forks_sema");
+	sem_unlink("printer_sema");
+	info->sem = sem_open("forks_sema", O_CREAT, 0644, info->humans);
+	info->printer = sem_open("printer_sema", O_CREAT, 0644, 1);
+	if (info->sem == SEM_FAILED || info->printer == SEM_FAILED
+		|| make_checker_sema(info))
+		return (SEMAERR);
+	if (info->checker == 0)
+		return (ALLOCERR);
+	i = -1;
+	while (++i < info->humans)
 	{
 		philo[i].info = info;
 		philo[i].eat = 0;
 		philo[i].id = i;
-		philo[i].l_fork = &(info->fork[i]);
-		philo[i].r_fork = &(info->fork[(i + 1) % info->humans]);
-		philo[i].real_l_fork = &(info->real_fork[i]);
-		philo[i].real_r_fork = &(info->real_fork[(i + 1) % info->humans]);
+		philo[i].sem = info->sem;
+		philo[i].printer = info->printer;
+		philo[i].checker = info->checker[i];
 		philo[i].thread = malloc(sizeof(pthread_t));
 		if (philo[i].thread == 0)
 			return (ALLOCERR);
-		i++;
-	}
-	return (0);
-}
-
-int	make_forks(t_info *info)
-{
-	int	i;
-
-	if (pthread_mutex_init(&(info->printer), 0) != 0)
-		return (MUTEXERR);
-	info->fork = malloc(sizeof(pthread_mutex_t) * info->humans);
-	if (info->fork == 0)
-		return (ALLOCERR);
-	info->real_fork = malloc(sizeof(int) * info->humans);
-	if (info->real_fork == 0)
-		return (ALLOCERR);
-	i = 0;
-	while (i < info->humans)
-	{
-		if (pthread_mutex_init(&(info->fork)[i], 0) == -1)
-			return (MUTEXERR);
-		info->real_fork[i] = 0;
-		i++;
 	}
 	return (0);
 }
@@ -94,9 +74,8 @@ int	init_info(t_info *info, char *av[], int ac)
 	info->die_time = ft_atoi(av[2]);
 	info->eat_time = ft_atoi(av[3]);
 	info->slp_time = ft_atoi(av[4]);
-	info->start = get_time();
+	info->start = get_time() + 100;
 	info->max_eat = 0;
-	info->end_flag = 0;
 	if (info->humans <= 0 || info->die_time < 0 || info->eat_time < 0
 		|| info->slp_time < 0)
 		return (ARGERR);
@@ -108,5 +87,9 @@ int	init_info(t_info *info, char *av[], int ac)
 		if (info->max_eat <= 0)
 			return (ARGERR);
 	}
+	info->pid = malloc(sizeof(pid_t) * info->humans);
+	info->pid_flag = malloc(sizeof(int) * info->humans);
+	if (info->pid == 0 || info->pid_flag == 0)
+		return (ALLOCERR);
 	return (0);
 }

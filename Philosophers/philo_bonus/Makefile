@@ -1,8 +1,8 @@
 CC= cc
 CFLAGS= -Wall -Wextra -Werror
-SRCS= main.c atoi.c parsing.c thread.c eating.c
+SRCS= main_bonus.c atoi_bonus.c parsing_bonus.c thread_bonus.c utils_bonus.c end_seq_bonus.c 
 OBJ= $(SRCS:.c=.o)
-NAME= philo
+NAME= philo_bonus
 
 all: $(NAME)
 
