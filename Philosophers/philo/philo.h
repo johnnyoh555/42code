@@ -6,7 +6,7 @@
 /*   By: jooh <jooh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 15:25:54 by jooh              #+#    #+#             */
-/*   Updated: 2023/12/05 11:45:19 by jooh             ###   ########.fr       */
+/*   Updated: 2023/12/06 17:06:19 by jooh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,14 @@
 typedef struct s_info
 {
 	int				humans;
-	int				die_time;
-	int				eat_time;
-	int				slp_time;
+	long			die_time;
+	long			eat_time;
+	long			slp_time;
 	int				max_eat;
 	long			start;
 	pthread_mutex_t	printer;
 	pthread_mutex_t	*fork;
+	pthread_mutex_t	startline;
 	int				*real_fork;
 	int				end_flag;
 }	t_info;
@@ -62,8 +63,7 @@ int		check_end(t_info *info);
 // thread.c
 int		sitdown(t_info *info, t_philo *philo);
 void	*patern(void *lst);
-void	right_handed(t_info *info, t_philo *philo, int flag);
-void	left_handed(t_info *info, t_philo *philo, int flag);
+void	*onedog(void *lst);
 
 // parsing.c
 int		init_info(t_info *info, char *av[], int ac);
@@ -80,8 +80,9 @@ int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		check_dead(t_info *info, t_philo *philo);
 
 // eating.c
-void	right_handed(t_info *info, t_philo *philo, int flag);
-void	left_handed(t_info *info, t_philo *philo, int flag);
-void	time_to_eat(t_info *info, t_philo *philo);
+void	right_handed(t_info *info, t_philo *philo);
+void	left_handed(t_info *info, t_philo *philo);
+int		time_to_eat_r(t_info *info, t_philo *philo);
+int		time_to_eat_l(t_info *info, t_philo *philo);
 
 #endif

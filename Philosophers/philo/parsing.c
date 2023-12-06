@@ -6,7 +6,7 @@
 /*   By: jooh <jooh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 15:57:55 by jooh              #+#    #+#             */
-/*   Updated: 2023/12/05 19:53:54 by jooh             ###   ########.fr       */
+/*   Updated: 2023/12/06 20:06:32 by jooh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	end_seq(t_info *info, t_philo *philo)
 	if (info->fork)
 		free(info->fork);
 	pthread_mutex_destroy(&(info->printer));
+	pthread_mutex_destroy(&(info->startline));
 	if (philo)
 		free(philo);
 }
@@ -37,10 +38,12 @@ void	end_seq(t_info *info, t_philo *philo)
 long	get_time(void)
 {
 	struct timeval	tv;
+	int				time;
 
 	if (gettimeofday(&tv, 0) == -1)
 		return (-1);
-	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+	time = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
+	return (time);
 }
 
 int	make_philos(t_info *info, t_philo *philo)
@@ -71,6 +74,8 @@ int	make_forks(t_info *info)
 
 	if (pthread_mutex_init(&(info->printer), 0) != 0)
 		return (MUTEXERR);
+	if (pthread_mutex_init(&(info->startline), 0) != 0)
+		return (MUTEXERR);
 	info->fork = malloc(sizeof(pthread_mutex_t) * info->humans);
 	if (info->fork == 0)
 		return (ALLOCERR);
@@ -94,7 +99,7 @@ int	init_info(t_info *info, char *av[], int ac)
 	info->die_time = ft_atoi(av[2]);
 	info->eat_time = ft_atoi(av[3]);
 	info->slp_time = ft_atoi(av[4]);
-	info->start = get_time();
+	info->start = get_time() + 100;
 	info->max_eat = 0;
 	info->end_flag = 0;
 	if (info->humans <= 0 || info->die_time < 0 || info->eat_time < 0

@@ -6,7 +6,7 @@
 /*   By: jooh <jooh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 15:45:42 by jooh              #+#    #+#             */
-/*   Updated: 2023/12/05 17:14:50 by jooh             ###   ########.fr       */
+/*   Updated: 2023/12/06 19:48:59 by jooh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	*patern(void *lst)
 		ft_printf(philo->info, philo, "is sleeping", 3);
 		time_go(philo->info, philo, philo->info->slp_time, 0);
 		ft_printf(philo->info, philo, "is thinking", 2);
-		usleep(10);
+		usleep(100);
 	}
 }
 
@@ -73,7 +73,7 @@ void	monitering(t_info *info, t_philo *philo)
 		if (now > deadline)
 			ft_printf(info, philo, "died", 1);
 		sem_post(philo->checker);
-		usleep(250);
+		usleep(200);
 	}
 	sem_post(philo->checker);
 }

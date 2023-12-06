@@ -6,7 +6,7 @@
 /*   By: jooh <jooh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 15:24:59 by jooh              #+#    #+#             */
-/*   Updated: 2023/12/05 17:59:31 by jooh             ###   ########.fr       */
+/*   Updated: 2023/12/06 19:55:38 by jooh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,12 @@
 long	get_time(void)
 {
 	struct timeval	tv;
+	long			time;
 
 	if (gettimeofday(&tv, 0) == -1)
 		return (-1);
-	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+	time = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
+	return (time);
 }
 
 int	time_go(t_info *info, t_philo *philo, long sleep, int i)
@@ -27,14 +29,18 @@ int	time_go(t_info *info, t_philo *philo, long sleep, int i)
 	long	die_time;
 
 	sem_wait(philo->checker);
-	if (i)
+	if (i == 1)
+	{
+		if (get_time() > philo->last_eat + info->die_time)
+			ft_printf(info, philo, "died", 1);
 		philo->last_eat = get_time();
+	}
 	die_time = philo->last_eat + info->die_time;
 	sem_post(philo->checker);
 	start = get_time();
 	if (start + sleep <= die_time)
 		usleep(sleep * 500);
-	while (start + sleep >= get_time())
+	while (start + sleep > get_time())
 		usleep(100);
 	return (0);
 }
