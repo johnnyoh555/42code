@@ -6,7 +6,7 @@
 /*   By: jooh <jooh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 12:15:04 by jooh              #+#    #+#             */
-/*   Updated: 2023/11/28 15:54:41 by jooh             ###   ########.fr       */
+/*   Updated: 2023/12/10 17:32:13 by jooh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,8 @@ void	check_y(t_info *info, char *mapname)
 	int		i;
 
 	i = 0;
-	info->mpi18 = M_PI / 18;
+	info->sin10 = sin(M_PI / 18);
+	info->cos10 = cos(M_PI / 18);
 	info->xspin = 0;
 	info->yspin = 0;
 	fd = open(mapname, O_RDONLY);
@@ -107,7 +108,8 @@ void	init_info(t_info *info, char *mapname)
 	int		fd;
 
 	info->dis = 1;
-	info->mpi6 = M_PI / 6;
+	info->sin30 = sin(M_PI / 6);
+	info->cos30 = cos(M_PI / 6);
 	info->move_x = 0;
 	info->move_y = 0;
 	check_y(info, mapname);

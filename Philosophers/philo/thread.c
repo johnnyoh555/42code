@@ -6,13 +6,13 @@
 /*   By: jooh <jooh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 15:45:42 by jooh              #+#    #+#             */
-/*   Updated: 2023/12/06 20:05:33 by jooh             ###   ########.fr       */
+/*   Updated: 2023/12/10 14:21:10 by jooh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	start_line(t_info *info)
+static void	start_line(t_info *info)
 {
 	pthread_mutex_lock(&info->startline);
 	pthread_mutex_unlock(&info->startline);
@@ -24,7 +24,7 @@ void	start_line(t_info *info)
 	}
 }
 
-void	*patern(void *lst)
+static void	*patern(void *lst)
 {
 	t_philo	*philo;
 
@@ -33,12 +33,13 @@ void	*patern(void *lst)
 	philo->last_eat = get_time();
 	if (philo->id % 2 == 1)
 		usleep(philo->info->eat_time * 500);
-	while (check_dead(philo->info, philo) == 0)
+	while (check_end(philo->info) == 0)
 	{
-		if (philo->id % 2 == 0)
-			right_handed(philo->info, philo);
-		else
+		if (philo->info->humans % 2 == 1
+			&& philo->id == philo->info->humans - 1)
 			left_handed(philo->info, philo);
+		else
+			right_handed(philo->info, philo);
 		if (philo->info->max_eat && philo->eat == philo->info->max_eat)
 			break ;
 		ft_printf(philo->info, philo, "is sleeping", 3);
@@ -49,7 +50,7 @@ void	*patern(void *lst)
 	return (0);
 }
 
-void	*onedog(void *lst)
+static void	*onedog(void *lst)
 {
 	t_philo	*philo;
 
@@ -72,7 +73,7 @@ void	*onedog(void *lst)
 	return (0);
 }
 
-void	wait_thread(t_info *info, t_philo *philo)
+static void	wait_thread(t_info *info, t_philo *philo)
 {
 	int	i;
 

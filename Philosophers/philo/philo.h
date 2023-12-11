@@ -6,7 +6,7 @@
 /*   By: jooh <jooh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 15:25:54 by jooh              #+#    #+#             */
-/*   Updated: 2023/12/06 17:06:19 by jooh             ###   ########.fr       */
+/*   Updated: 2023/12/10 14:05:08 by jooh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,35 +54,30 @@ typedef struct s_philo
 	pthread_t		*thread;
 }	t_philo;
 
-// main.c
-int		err_seq(t_info *info, t_philo *philo, int i);
-void	ft_printf(t_info *info, t_philo *philo, char *str, int flag);
-int		time_go(t_info *info, t_philo *philo, long sleep, int i);
-int		check_end(t_info *info);
-
 // thread.c
 int		sitdown(t_info *info, t_philo *philo);
-void	*patern(void *lst);
-void	*onedog(void *lst);
 
 // parsing.c
 int		init_info(t_info *info, char *av[], int ac);
 int		make_forks(t_info *info);
 int		make_philos(t_info *info, t_philo *philo);
-long	get_time(void);
-void	end_seq(t_info *info, t_philo *philo);
-
-// atoi.c
-int		ft_atoi(char *str);
-int		check_size(char *str, int minus, int i);
-int		ft_strlen(char *str);
-int		ft_strncmp(const char *s1, const char *s2, size_t n);
-int		check_dead(t_info *info, t_philo *philo);
 
 // eating.c
 void	right_handed(t_info *info, t_philo *philo);
 void	left_handed(t_info *info, t_philo *philo);
-int		time_to_eat_r(t_info *info, t_philo *philo);
-int		time_to_eat_l(t_info *info, t_philo *philo);
+
+// utils.c
+void	ft_printf(t_info *info, t_philo *philo, char *str, int flag);
+int		check_end(t_info *info);
+int		check_dead(t_info *info, t_philo *philo);
+void	end_seq(t_info *info, t_philo *philo);
+int		err_seq(t_info *info, t_philo *philo, int i);
+
+// time.c
+long	get_time(void);
+int		time_go(t_info *info, t_philo *philo, long sleep, int i);
+
+// atoi.c
+int		ft_atoi(char *str);
 
 #endif

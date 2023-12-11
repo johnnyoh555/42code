@@ -6,7 +6,7 @@
 /*   By: jooh <jooh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 20:03:38 by jooh              #+#    #+#             */
-/*   Updated: 2023/11/27 22:05:10 by jooh             ###   ########.fr       */
+/*   Updated: 2023/12/10 17:27:31 by jooh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void	calc_spinning_byy(t_info *info, t_point *p)
 
 	x = p->mx;
 	z = p->mz;
-	p->mx = x * cos(info->mpi18) - z * sin(info->mpi18);
-	p->mz = x * sin(info->mpi18) + z * cos(info->mpi18);
+	p->mx = x * info->cos10 - z * info->sin10;
+	p->mz = x * info->sin10 + z * info->cos10;
 }
 
 void	spinning_byy(t_info *info)
@@ -48,8 +48,8 @@ void	calc_spinning_byx(t_info *info, t_point *p)
 
 	y = p->my;
 	z = p->mz;
-	p->my = y * cos(info->mpi18) + z * sin(info->mpi18);
-	p->mz = -y * sin(info->mpi18) + z * cos(info->mpi18);
+	p->my = y * info->cos10 + z * info->sin10;
+	p->mz = -y * info->sin10 + z * info->cos10;
 }
 
 void	spinning_byx(t_info *info)

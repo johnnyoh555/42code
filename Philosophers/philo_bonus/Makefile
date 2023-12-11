@@ -7,8 +7,7 @@ NAME= philo_bonus
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	$(LIBFT)
-	$(CC) $(CFLAGS) $(SRCS) -pthread -o $(NAME) 
+	$(CC) $(CFLAGS) $(OBJ) -pthread -o $(NAME) 
 
 $(OBJ): $(SRCS)
 	$(CC) $(CFLAGS) -c $^

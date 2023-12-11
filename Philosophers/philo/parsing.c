@@ -6,45 +6,11 @@
 /*   By: jooh <jooh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 15:57:55 by jooh              #+#    #+#             */
-/*   Updated: 2023/12/06 20:06:32 by jooh             ###   ########.fr       */
+/*   Updated: 2023/12/10 14:03:13 by jooh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-void	end_seq(t_info *info, t_philo *philo)
-{
-	int	i;
-
-	i = 0;
-	if (info->real_fork)
-		free(info->real_fork);
-	while (i < info->humans)
-	{
-		if (info->fork)
-			pthread_mutex_destroy(&(info->fork[i]));
-		if (philo && philo[i].thread)
-			free(philo[i].thread);
-		i++;
-	}
-	if (info->fork)
-		free(info->fork);
-	pthread_mutex_destroy(&(info->printer));
-	pthread_mutex_destroy(&(info->startline));
-	if (philo)
-		free(philo);
-}
-
-long	get_time(void)
-{
-	struct timeval	tv;
-	int				time;
-
-	if (gettimeofday(&tv, 0) == -1)
-		return (-1);
-	time = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
-	return (time);
-}
 
 int	make_philos(t_info *info, t_philo *philo)
 {
@@ -102,8 +68,8 @@ int	init_info(t_info *info, char *av[], int ac)
 	info->start = get_time() + 100;
 	info->max_eat = 0;
 	info->end_flag = 0;
-	if (info->humans <= 0 || info->die_time < 0 || info->eat_time < 0
-		|| info->slp_time < 0)
+	if (info->humans <= 0 || info->die_time <= 0 || info->eat_time <= 0
+		|| info->slp_time <= 0)
 		return (ARGERR);
 	if (info->start == -1)
 		return (TIMEERR);

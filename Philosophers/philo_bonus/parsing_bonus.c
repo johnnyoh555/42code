@@ -6,7 +6,7 @@
 /*   By: jooh <jooh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 15:57:55 by jooh              #+#    #+#             */
-/*   Updated: 2023/12/04 21:23:46 by jooh             ###   ########.fr       */
+/*   Updated: 2023/12/09 17:17:33 by jooh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,8 @@ int	init_info(t_info *info, char *av[], int ac)
 	info->slp_time = ft_atoi(av[4]);
 	info->start = get_time() + 100;
 	info->max_eat = 0;
-	if (info->humans <= 0 || info->die_time < 0 || info->eat_time < 0
-		|| info->slp_time < 0)
+	if (info->humans <= 0 || info->die_time <= 0 || info->eat_time <= 0
+		|| info->slp_time <= 0)
 		return (ARGERR);
 	if (info->start == -1)
 		return (TIMEERR);

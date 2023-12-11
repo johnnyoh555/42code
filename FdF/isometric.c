@@ -6,7 +6,7 @@
 /*   By: jooh <jooh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:47:27 by jooh              #+#    #+#             */
-/*   Updated: 2023/11/28 16:07:41 by jooh             ###   ########.fr       */
+/*   Updated: 2023/12/10 17:26:10 by jooh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ void	to_cen(t_info *info, t_point *p)
 
 void	calc_isometric(t_info *info, t_point *p)
 {
-	p->px = (p->mx - p->my) * cos(info->mpi6);
-	p->py = (p->mx + p->my) * sin(info->mpi6) - p->mz / 1;
+	p->px = (p->mx - p->my) * info->cos30;
+	p->py = (p->mx + p->my) * info->sin30 - p->mz / 1;
 }
 
 void	isometric(t_info *info)

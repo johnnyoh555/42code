@@ -6,13 +6,13 @@
 /*   By: jooh <jooh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 15:25:05 by jooh              #+#    #+#             */
-/*   Updated: 2023/12/05 13:07:47 by jooh             ###   ########.fr       */
+/*   Updated: 2023/12/10 13:21:55 by jooh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
+static int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
 	unsigned char	*str1;
 	unsigned char	*str2;
@@ -32,7 +32,7 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	return (0);
 }
 
-int	ft_strlen(char *str)
+static int	ft_strlen(char *str)
 {
 	int	len;
 
@@ -42,7 +42,7 @@ int	ft_strlen(char *str)
 	return (len);
 }
 
-int	check_size(char *str, int minus, int i)
+static int	check_size(char *str, int minus, int i)
 {
 	while (*str == '0')
 		str++;
