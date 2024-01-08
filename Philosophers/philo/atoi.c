@@ -6,7 +6,7 @@
 /*   By: jooh <jooh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 15:25:05 by jooh              #+#    #+#             */
-/*   Updated: 2023/12/10 13:21:55 by jooh             ###   ########.fr       */
+/*   Updated: 2023/12/22 13:18:41 by jooh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@ static int	check_size(char *str, int minus, int i)
 
 int	ft_atoi(char *str)
 {
-	int			minus;
-	int long	value;
+	int		minus;
+	long	value;
 
 	value = 0;
 	minus = 1;

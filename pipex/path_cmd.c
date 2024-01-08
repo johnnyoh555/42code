@@ -6,7 +6,7 @@
 /*   By: jooh <jooh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 15:14:33 by jooh              #+#    #+#             */
-/*   Updated: 2023/11/22 18:51:39 by jooh             ###   ########.fr       */
+/*   Updated: 2023/12/11 20:28:11 by jooh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,6 @@ char	*cmd_path(t_info *info, char **cmd, int i)
 	if (ft_strchr(cmd[0], '/'))
 		return (NULL);
 	str = ft_strjoin("/", cmd[0]);
-	if (str == 0)
-		ctl_error(info, 1, 0, "malloc");
 	i = 0;
 	while (info->path[i])
 	{

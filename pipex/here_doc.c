@@ -6,7 +6,7 @@
 /*   By: jooh <jooh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 20:29:03 by jooh              #+#    #+#             */
-/*   Updated: 2023/11/23 14:17:32 by jooh             ###   ########.fr       */
+/*   Updated: 2023/12/14 19:15:41 by jooh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	checkfilename(t_info *info)
 	int		i;
 	char	*str;
 
-	fname = "heredoc_flag";
+	fname = "./heredoc/heredoc_flag";
 	i = 0;
 	while (1)
 	{

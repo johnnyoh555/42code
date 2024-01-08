@@ -6,7 +6,7 @@
 /*   By: jooh <jooh@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 16:19:59 by jooh              #+#    #+#             */
-/*   Updated: 2023/12/10 21:06:17 by jooh             ###   ########.fr       */
+/*   Updated: 2023/12/12 11:55:02 by jooh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,21 @@
 int	err_seq(char *str, char *err, int ex, int flag)
 {
 	if (err == 0)
-		printf("minishell: %s: %s\n", str, strerror(errno));
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(str, 2);
+		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(strerror(errno), 2);
+		ft_putstr_fd("\n", 2);
+	}
 	else
-		printf("minishell: %s: %s\n", str, err);
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(str, 2);
+		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(err, 2);
+		ft_putstr_fd("\n", 2);
+	}
 	if (flag)
 		return (ex);
 	exit(ex);
