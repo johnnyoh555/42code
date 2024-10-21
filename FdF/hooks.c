@@ -16,7 +16,7 @@ void	change_dis(t_info *info, int i)
 {
 	if (i == 27 && info->dis != 1)
 		info->dis -= 1;
-	else if (i == 24 && info->dis < 12)
+	else if (i == 24 && info->dis < 50)
 		info->dis += 1;
 	else
 		return ;

@@ -21,7 +21,7 @@ void	to_cen(t_info *info, t_point *p)
 void	calc_isometric(t_info *info, t_point *p)
 {
 	p->px = (p->mx - p->my) * info->cos30;
-	p->py = (p->mx + p->my) * info->sin30 - p->mz / 1;
+	p->py = (p->mx + p->my) * info->sin30 - p->mz / 2;
 }
 
 void	isometric(t_info *info)
